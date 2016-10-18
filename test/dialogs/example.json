@@ -1,0 +1,227 @@
+{
+  "bots": {
+    "tv": {
+      "freeStates": [
+        {
+          "id": "TV_MUTE",
+          "name": "Mute",
+          "sentences": {
+            "fr": [
+              "coupe le son",
+              "coupe le son(?: +\w+){0,5} +(?:télé|télévision,tv)"
+            ],
+            "en": [
+              "mute",
+              "mute(?: +\w+){0,4} +tv"
+            ]
+          },
+          "responses": {
+            "fr": [
+              "voila",
+              "C'est fait"
+            ],
+            "en": [
+              "done"
+            ]
+          }
+        },
+        {
+          "id": "TV_PREVIOUS_CHANNEL",
+          "name": "Previous channel",
+          "sentences": {
+            "fr": [
+              "chaine précédente"
+            ],
+            "en": [
+              "previous channel"
+            ]
+          },
+          "responses": {
+            "fr": [
+              "voila",
+              "C'est fait"
+            ],
+            "en": [
+              "done"
+            ]
+          }
+        },
+        {
+          "id": "TV_NEXT_CHANNEL",
+          "name": "Next channel",
+          "sentences": {
+            "fr": [
+              "chaine suivante"
+            ],
+            "en": [
+              "next channel"
+            ]
+          },
+          "responses": {
+            "fr": [
+              "voila",
+              "C'est fait"
+            ],
+            "en": [
+              "done"
+            ]
+          }
+        },
+        {
+          "id": "TV_SOUND_UP",
+          "name": "Sound up",
+          "sentences": {
+            "fr": [
+              "monte le son",
+              "augmente le son",
+              "augmente le volume",
+              "monte le volume"
+            ],
+            "en": [
+              "louder",
+              "increase the volume",
+              "increase the sound",
+              "up the volume",
+              "up the sound"
+            ]
+          },
+          "responses": {
+            "fr": [
+              "voulez vous monter plus ?"
+            ],
+            "en": [
+              "do you want to increase more ?"
+            ]
+          }
+        },
+        {
+          "id": "TV_SOUND_DOWN",
+          "name": "Sound down",
+          "sentences": {
+            "fr": [
+              "baisse le son",
+              "baisse le volume",
+              "réduit le volume",
+              "réduit le son"
+            ],
+            "en": [
+              "weaker",
+              "decrease the volume",
+              "decrease the sound",
+              "reduce the sound",
+              "reduce the volume"
+            ]
+          },
+          "responses": {
+            "fr": [
+              "voulez baisser plus ?"
+            ],
+            "en": [
+              "do you want to decrease more ?"
+            ]
+          }
+        }
+      ],
+      "nestedStates": [
+        {
+          "id": "TV_SOUND_AGAIN_DOWN",
+          "name": "Encore",
+          "responses": {
+            "fr": [
+              "voulez baisser plus ?"
+            ],
+            "en": [
+              "do you want to decrease more ?"
+            ]
+          }
+        },
+        {
+          "id": "TV_SOUND_AGAIN_UP",
+          "name": "Encore",
+          "responses": {
+            "fr": [
+              "voulez vous monter plus ?"
+            ],
+            "en": [
+              "do you want to increase more ?"
+            ]
+          }
+        }
+      ],
+      "links": [
+        {
+          "from": "TV_SOUND_UP",
+          "to": "TV_SOUND_AGAIN_UP",
+          "sentences": {
+            "fr": [
+              "ok",
+              "oui",
+              "volontier",
+              "ça marche"
+            ],
+            "en": [
+              "ok",
+              "yes",
+              "sure",
+              "let's do this"
+            ]
+          }
+        },
+        {
+          "from": "TV_SOUND_DOWN",
+          "to": "TV_SOUND_AGAIN_DOWN",
+          "sentences": {
+            "fr": [
+              "ok",
+              "oui",
+              "volontier",
+              "ça marche"
+            ],
+            "en": [
+              "ok",
+              "yes",
+              "sure",
+              "let's do this"
+            ]
+          }
+        },
+        {
+          "from": "TV_SOUND_AGAIN_DOWN",
+          "to": "TV_SOUND_AGAIN_DOWN",
+          "sentences": {
+            "fr": [
+              "ok",
+              "oui",
+              "volontier",
+              "ça marche"
+            ],
+            "en": [
+              "ok",
+              "yes",
+              "sure",
+              "let's do this"
+            ]
+          }
+        },
+        {
+          "from": "TV_SOUND_AGAIN_UP",
+          "to": "TV_SOUND_AGAIN_UP",
+          "sentences": {
+            "fr": [
+              "ok",
+              "oui",
+              "volontier",
+              "ça marche"
+            ],
+            "en": [
+              "ok",
+              "yes",
+              "sure",
+              "let's do this"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

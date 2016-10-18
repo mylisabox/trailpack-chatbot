@@ -1,0 +1,49 @@
+{
+  "name": "trailpack-chatbot",
+  "version": "0.0.0",
+  "description": "Trailpack to manage basic chatbox from Trails project ",
+  "homepage": "http://trailsjs.io",
+  "author": {
+    "name": "jaumard",
+    "email": "jimmy.aumard@gmail.com",
+    "url": "https://github.com/jaumard"
+  },
+  "main": "index.js",
+  "keywords": [
+    "trailpack",
+    "trails",
+    "trailjs",
+    "chat",
+    "bot",
+    "chatbot"
+  ],
+  "dependencies": {
+    "trailpack": "^1.0.5",
+    "trails-controller": "^1.0.0-beta-2",
+    "trails-model": "^1.0.0-beta-2",
+    "trails-service": "^1.0.0-beta-2"
+  },
+  "devDependencies": {
+    "eslint": "^3.8.0",
+    "eslint-config-trails": "^1.0.7",
+    "lodash": "^4.16.4",
+    "mocha": "^3.1.2",
+    "smokesignals": "^1.2.2",
+    "sqlite3": "^3.1.6",
+    "trailpack-cache": "^1.0.0",
+    "trailpack-core": "^1.0.1",
+    "trailpack-sequelize": "^1.1.0",
+    "trails": "^1.1.0"
+  },
+  "scripts": {
+    "test": "eslint . && mocha"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "eslintConfig": {
+    "extends": "trails"
+  },
+  "repository": "https://github.com/mylisabox/trailpack-chatbot",
+  "license": "MIT"
+}
