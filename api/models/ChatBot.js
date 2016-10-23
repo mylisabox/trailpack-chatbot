@@ -18,6 +18,10 @@ module.exports = class ChatBot extends Model {
         primaryKey: true,
         allowNull: false
       },
+      displayName: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       enabled: {
         type: Sequelize.BOOLEAN,
         defaultValue: true

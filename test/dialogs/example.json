@@ -1,81 +1,15 @@
 {
   "bots": {
     "tv": {
-      "freeStates": [
-        {
-          "id": "TV_MUTE",
-          "name": "Mute",
-          "sentences": {
-            "fr": [
-              "coupe le son",
-              "coupe le son(?: +\w+){0,5} +(?:télé|télévision,tv)"
-            ],
-            "en": [
-              "mute",
-              "mute(?: +\w+){0,4} +tv"
-            ]
-          },
-          "responses": {
-            "fr": [
-              "voila",
-              "C'est fait"
-            ],
-            "en": [
-              "done"
-            ]
-          }
-        },
-        {
-          "id": "TV_PREVIOUS_CHANNEL",
-          "name": "Previous channel",
-          "sentences": {
-            "fr": [
-              "chaine précédente"
-            ],
-            "en": [
-              "previous channel"
-            ]
-          },
-          "responses": {
-            "fr": [
-              "voila",
-              "C'est fait"
-            ],
-            "en": [
-              "done"
-            ]
-          }
-        },
-        {
-          "id": "TV_NEXT_CHANNEL",
-          "name": "Next channel",
-          "sentences": {
-            "fr": [
-              "chaine suivante"
-            ],
-            "en": [
-              "next channel"
-            ]
-          },
-          "responses": {
-            "fr": [
-              "voila",
-              "C'est fait"
-            ],
-            "en": [
-              "done"
-            ]
-          }
-        },
-        {
-          "id": "TV_SOUND_UP",
+      "name": "TV",
+      "freeStates": {
+        "TV_SOUND_UP": {
           "name": "Sound up",
           "sentences": {
             "fr": [
-              "monte le son",
-              "augmente le son",
-              "augmente le volume",
-              "monte le volume"
+              "augmente le (son|volume) de ([0-9]+)",
+              "monte le (volume|son)",
+              "augmente le (son|volume)"
             ],
             "en": [
               "louder",
@@ -94,8 +28,7 @@
             ]
           }
         },
-        {
-          "id": "TV_SOUND_DOWN",
+        "TV_SOUND_DOWN": {
           "name": "Sound down",
           "sentences": {
             "fr": [
@@ -121,10 +54,9 @@
             ]
           }
         }
-      ],
-      "nestedStates": [
-        {
-          "id": "TV_SOUND_AGAIN_DOWN",
+      },
+      "nestedStates": {
+        "TV_SOUND_AGAIN_DOWN": {
           "name": "Encore",
           "responses": {
             "fr": [
@@ -135,8 +67,7 @@
             ]
           }
         },
-        {
-          "id": "TV_SOUND_AGAIN_UP",
+        "TV_SOUND_AGAIN_UP": {
           "name": "Encore",
           "responses": {
             "fr": [
@@ -147,7 +78,7 @@
             ]
           }
         }
-      ],
+      },
       "links": [
         {
           "from": "TV_SOUND_UP",

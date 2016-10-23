@@ -13,6 +13,7 @@ module.exports = _.defaultsDeep({
     services: {}
   },
   config: {
+    chatbots: require('./dialogs/example.json'),
     database: {
       stores: {
         sqlitedev: {
@@ -35,6 +36,9 @@ module.exports = _.defaultsDeep({
         require('trailpack-sequelize'),
         require('../')
       ]
+    },
+    log: {
+      logger: new smokesignals.Logger('debug')
     },
     caches: {
       stores: [
