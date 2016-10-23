@@ -18,7 +18,7 @@ yo trails:trailpack trailpack-chatbot
 
 With npm (you will have to create config file manually) :
  
-`npm install --save trailpack-email`
+`npm install --save trailpack-chatbot`
 
 
 ## Compatibility
@@ -45,7 +45,7 @@ module.exports = {
 In order to work you need to install and configure [trailpack-cache](https://github.com/trailsjs/trailpack-cache)
 
 ## Config
-Choose a template engine.
+Setup your bots.
 
 ```js
 // config/chatbot.js
@@ -54,7 +54,7 @@ module.exports = {
 }
 ```
 
-Full example of bot [here](https://github.com/trailsjs/trails/blob/master/test/dialogs/example.json)
+Full example of bot [here](https://github.com/mylisabox/trailpack-chatbot/blob/master/test/dialogs/example.json)
 
 ## Contributing
 We love contributions! Please check out our [Contributor's Guide](https://github.com/trailsjs/trails/blob/master/.github/CONTRIBUTING.md) for more
