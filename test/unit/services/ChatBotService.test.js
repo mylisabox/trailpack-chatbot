@@ -11,7 +11,8 @@ describe('ChatBotService', () => {
   const dataExample = require('../../dialogs/example.json')
 
   it('should compile sentences correctly', done => {
-    const compiledSentences = global.app.services.ChatBotService._compileSentences(dataExample.bots.tv.freeStates.TV_CHANNEL.sentences)
+    const compiledSentences = global.app.services.// eslint-disable-line no-underscore-dangle
+    ChatBotService._compileSentences(dataExample.bots.tv.freeStates.TV_CHANNEL.sentences)
     assert(compiledSentences)
     assert(compiledSentences.fr)
     assert(compiledSentences.en)

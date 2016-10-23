@@ -22,7 +22,7 @@ module.exports = class ChatbotTrailpack extends Trailpack {
    * Initialize bots
    */
   initialize() {
-    return this.app.services.ChatBotService.init(this.app.config.chatbots)
+    return this.app.services.ChatBotService.init(this.app.config.chatbots.bots)
   }
 
   constructor(app) {

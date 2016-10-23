@@ -14,7 +14,12 @@ const mapParams = {
  * @description Manage chatbots
  */
 module.exports = class ChatBotService extends Service {
-
+  /**
+   * Compile sentences to change fields into regexp
+   * @param sentences to compile
+   * @returns {{}}
+   * @private
+   */
   _compileSentences(sentences) {
     const compiledSentences = {}
     _.each(sentences, (sentences, lang) => {
@@ -41,6 +46,40 @@ module.exports = class ChatBotService extends Service {
     return compiledSentences
   }
 
+  /**
+   * Prepare chatBot data before saving in database
+   * @param botId
+   * @param botData
+   * @private
+   */
+  _prepareChatBot(botId, botData) {
+    botData.id = botId
+
+    _.each(botData.links, link => {
+      link.compiledSentences = this._compileSentences(link.sentences)
+    })
+
+    _.each(botData.freeStates, (data, id) => {
+      data.id = id
+      data.compiledSentences = this._compileSentences(data.sentences)
+      data.links = botData.links.filter(link => {
+        return link.from === id
+      })
+    })
+
+    _.each(botData.nestedStates, (data, id) => {
+      data.id = id
+      data.links = botData.links.filter(link => {
+        return link.from === id
+      })
+    })
+  }
+
+  /**
+   * Compile and save chatBot into DB
+   * @param initialData
+   * @returns {Promise.<ChatBot>}
+   */
   init(initialData) {
     this.botCache = this.app.services.CacheService.getCaches()
     initialData = _.cloneDeep(initialData)
@@ -52,27 +91,8 @@ module.exports = class ChatBotService extends Service {
       if (!results || results.length === 0) {
         //initialData
         const bots = []
-        _.forEach(initialData.bots, (botData, botId) => {
-          botData.id = botId
-
-          _.each(botData.links, link => {
-            link.compiledSentences = this._compileSentences(link.sentences)
-          })
-
-          _.each(botData.freeStates, (data, id) => {
-            data.id = id
-            data.compiledSentences = this._compileSentences(data.sentences)
-            data.links = botData.links.filter(link => {
-              return link.from === id
-            })
-          })
-
-          _.each(botData.nestedStates, (data, id) => {
-            data.id = id
-            data.links = botData.links.filter(link => {
-              return link.from === id
-            })
-          })
+        _.forEach(initialData, (botData, botId) => {
+          this._prepareChatBot(botId, botData)
 
           bots.push({
             name: botData.id,
@@ -80,7 +100,6 @@ module.exports = class ChatBotService extends Service {
             enabled: botData.enabled,
             data: botData
           })
-          this.log.debug(JSON.stringify(bots))
         })
         return this.app.orm.ChatBot.bulkCreate(bots).then(results => {
           this.chatBots = results
@@ -92,20 +111,76 @@ module.exports = class ChatBotService extends Service {
     })
   }
 
-  reloadBot(id, data) {
+  /**
+   * Add a new bot into DB
+   * @param botId
+   * @param botData
+   * @returns {Promise.<TResult>}
+   */
+  addBot(botId, botData) {
+    this._prepareChatBot(botId, botData)
+    return this.app.orm.ChatBot.create(botData).then(result => {
+      this.chatBots.push(result)
+      return result
+    })
+  }
+
+  /**
+   * Delete a bot in DB
+   * @param botId
+   * @returns {Promise.<TResult>}
+   */
+  deleteBot(botId) {
+    return this.app.orm.ChatBot.destroy({where: {name: botId}}).then(result => {
+      const index = _.indexOf(this.chatBots, _.find(this.chatBots, {name: botId}))
+      this.chatBots.splice(index, 1)
+      return result
+    })
+  }
+
+  /**
+   * Update a bot in DB
+   * @param botId
+   * @param botData
+   * @returns {Promise.<TResult>}
+   */
+  updateBot(botId, botData) {
+    return this.app.orm.ChatBot.update(botData, {where: {name: botId}}).then(result => {
+      this.reloadBot(botId)
+      return result
+    })
+  }
+
+  /**
+   * Reload a specific bot
+   * @param botId
+   * @returns {Promise.<TResult>}
+   */
+  reloadBot(botId) {
     return this.app.orm.ChatBot.find({
       where: {
-        name: id
+        name: botId
       }
     }).then(result => {
       if (result) {
         // Find item index using indexOf+find
-        const index = _.indexOf(this.chatBots, _.find(this.chatBots, {name: id}))
-        this.chatBots.splice(index, 1, data)
+        const index = _.indexOf(this.chatBots, _.find(this.chatBots, {name: botId}))
+        this.chatBots.splice(index, 1, result)
       }
+      return result
     })
   }
 
+  /**
+   * Search if the user sentence match a sentence from the state
+   * @param bot
+   * @param stateData
+   * @param lang
+   * @param userSentence
+   * @param sentences
+   * @returns {*}
+   * @private
+   */
   _searchMatch(bot, stateData, lang, userSentence, sentences) {
     let results = null
     for (let j = 0; j < sentences[lang].length; j++) {
@@ -134,6 +209,14 @@ module.exports = class ChatBotService extends Service {
     return results
   }
 
+  /**
+   * Search if the sentence match a sentence from the free states of the bot
+   * @param bot
+   * @param lang
+   * @param userSentence
+   * @returns {*}
+   * @private
+   */
   _searchMatchForFreeStates(bot, lang, userSentence) {
     const keys = Object.keys(bot.data['freeStates'])
     let results = null
@@ -151,7 +234,15 @@ module.exports = class ChatBotService extends Service {
     return results
   }
 
-  interact(userId, lang, userSentence, chatbotId) {
+  /**
+   * Ask to process user sentence
+   * @param userId
+   * @param lang
+   * @param userSentence
+   * @param chatBotId - optional - search into a specific bot only
+   * @returns {Promise} processed data if found
+   */
+  interact(userId, lang, userSentence, chatBotId) {
     return new Promise((response, reject) => {
       this.botCache.get(userId + '_data', (err, data) => {
         if (err) {
@@ -178,8 +269,8 @@ module.exports = class ChatBotService extends Service {
 
           // no result in nested data or we want to test free states
           if (!result) {
-            if (chatbotId) {
-              const bot = _.find(this.chatBots, {name: chatbotId})
+            if (chatBotId) {
+              const bot = _.find(this.chatBots, {name: chatBotId})
               result = this._searchMatchForFreeStates(bot, lang, userSentence)
             }
             else {
