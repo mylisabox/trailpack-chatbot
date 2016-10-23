@@ -1,8 +1,8 @@
 {
   "name": "trailpack-chatbot",
-  "version": "0.0.0",
-  "description": "Trailpack to manage basic chatbox from Trails project ",
-  "homepage": "http://trailsjs.io",
+  "version": "1.0.0-alpha-1",
+  "description": "Trailpack to manage basic chat bots from Trails project ",
+  "homepage": "https://github.com/mylisabox/trailpack-chatbot",
   "author": {
     "name": "jaumard",
     "email": "jimmy.aumard@gmail.com",
@@ -24,7 +24,7 @@
     "trails-service": "^1.0.0-beta-2"
   },
   "devDependencies": {
-    "eslint": "^3.8.0",
+    "eslint": "^3.8.1",
     "eslint-config-trails": "^1.0.7",
     "lodash": "^4.16.4",
     "mocha": "^3.1.2",

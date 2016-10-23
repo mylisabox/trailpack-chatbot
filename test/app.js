@@ -36,9 +36,6 @@ module.exports = _.defaultsDeep({
         require('trailpack-sequelize'),
         require('../')
       ]
-    },
-    log: {
-      logger: new smokesignals.Logger('debug')
     }
   }
 }, smokesignals.FailsafeConfig)
