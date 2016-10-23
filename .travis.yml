@@ -22,3 +22,4 @@ deploy:
   on:
     tags: true
     repo: mylisabox/trailpack-chatbot
+    node: 6
