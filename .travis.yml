@@ -1,0 +1,24 @@
+language: node_js
+os:
+- linux
+- osx
+node_js:
+- 4
+- 5
+- 6
+before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+notifications:
+  email: false
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/54f8a1e753f859f5ca1a
+    on_start: never
+    on_failure: change
+deploy:
+  provider: npm
+  email: jimmy.aumard@gmail.com
+  api_key:
+    secure: NlyksEkTbgJoHjtOL3ibXcEJXljfFTYvIyf4xDrRdvaYD4/9OjZRhw37Hkb9Va8gN4PlKUiwU7t6oQDeTJ85bg0OVs+zmbzAKsfT2CM+lyLz+w1+f59MeNWWTUZK13GBzkTG+xv96R5UNFZSRIGD+RPIcNxlKN5Dfcj5nsfuTQpbUyiB3fvKePyLmM20OslxYMKCkN92EuJCjr5zA0bcAfdM3j190nQniFYr8Lb0qeQ9YjtXgqf1iWW5r9wuiJmLcS6ShqgaQwiyY20AOj5xLMOWPjIVKbzIqsHzxTV0BfEGAuzSbc5oXT74DebSJiNAsIrS9sMNmKCte7yFZlKlHFMOB5ZQG8+YCAloKn0KQz8t4V4nAAX2P+CvS0bIwKQjEiii+F1iUH3ADzo5MHupkapdEg4dL/o6Oeuyjsb46USTxDaIgAneI8/2JoPFh/sGcvEI2nZWFTWoMMz1WYnqQ5mWNfozdTLPHt+BgcssF4YJ89qsBW03qQfcWEM2bjjgZPh4dnjAY7C1/TgiCpqk++L58R81YPumKBPDDYyohYB5c8FeU3vRNvQHpoqMppwo/3AkZUgCEwZS2eTGGbrerwmXAJmpepD1gz4eBg0QSYSZ4H/qQGYfxyOi7qbLhPxOF4wWDYzVT3oW7th15gNeFeUdUsMaujbhkORQlpfi9WE=
+  on:
+    tags: true
+    repo: mylisabox/trailpack-chatbot

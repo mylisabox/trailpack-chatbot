@@ -3,13 +3,34 @@
     "tv": {
       "name": "TV",
       "freeStates": {
+        "TV_CHANNEL": {
+          "name": "Set channel",
+          "sentences": {
+            "fr": [
+              "mets %chaine%",
+              "mets la %number_chaine%"
+            ],
+            "en": [
+              "set channel %number_chaine%",
+              "set %chaine%"
+            ]
+          },
+          "responses": {
+            "fr": [
+              "c'est fait"
+            ],
+            "en": [
+              "Done"
+            ]
+          }
+        },
         "TV_SOUND_UP": {
           "name": "Sound up",
           "sentences": {
             "fr": [
-              "augmente le (son|volume) de ([0-9]+)",
-              "monte le (volume|son)",
-              "augmente le (son|volume)"
+              "augmente le (?:son|volume) de %number%",
+              "monte le (?:volume|son)",
+              "augmente le (?:son|volume)"
             ],
             "en": [
               "louder",
@@ -32,17 +53,14 @@
           "name": "Sound down",
           "sentences": {
             "fr": [
-              "baisse le son",
-              "baisse le volume",
-              "réduit le volume",
-              "réduit le son"
+              "baisse le (?:son|volume) de %number_volume%",
+              "baisse le (?:son|volume)",
+              "réduit le (?:son|volume)"
             ],
             "en": [
               "weaker",
-              "decrease the volume",
-              "decrease the sound",
-              "reduce the sound",
-              "reduce the volume"
+              "decrease the (?:sound,volume)",
+              "reduce the (?:sound,volume)"
             ]
           },
           "responses": {
@@ -56,7 +74,7 @@
         }
       },
       "nestedStates": {
-        "TV_SOUND_AGAIN_DOWN": {
+        "TV_SOUND_DOWN_AGAIN": {
           "name": "Encore",
           "responses": {
             "fr": [
@@ -67,7 +85,7 @@
             ]
           }
         },
-        "TV_SOUND_AGAIN_UP": {
+        "TV_SOUND_UP_AGAIN": {
           "name": "Encore",
           "responses": {
             "fr": [
@@ -82,73 +100,49 @@
       "links": [
         {
           "from": "TV_SOUND_UP",
-          "to": "TV_SOUND_AGAIN_UP",
+          "to": "TV_SOUND_UP_AGAIN",
           "sentences": {
             "fr": [
-              "ok",
-              "oui",
-              "volontier",
-              "ça marche"
+              "%acceptance%"
             ],
             "en": [
-              "ok",
-              "yes",
-              "sure",
-              "let's do this"
+              "%acceptance%"
             ]
           }
         },
         {
           "from": "TV_SOUND_DOWN",
-          "to": "TV_SOUND_AGAIN_DOWN",
+          "to": "TV_SOUND_DOWN_AGAIN",
           "sentences": {
             "fr": [
-              "ok",
-              "oui",
-              "volontier",
-              "ça marche"
+              "%acceptance%"
             ],
             "en": [
-              "ok",
-              "yes",
-              "sure",
-              "let's do this"
+              "%acceptance%"
             ]
           }
         },
         {
-          "from": "TV_SOUND_AGAIN_DOWN",
-          "to": "TV_SOUND_AGAIN_DOWN",
+          "from": "TV_SOUND_DOWN_AGAIN",
+          "to": "TV_SOUND_DOWN_AGAIN",
           "sentences": {
             "fr": [
-              "ok",
-              "oui",
-              "volontier",
-              "ça marche"
+              "%acceptance%"
             ],
             "en": [
-              "ok",
-              "yes",
-              "sure",
-              "let's do this"
+              "%acceptance%"
             ]
           }
         },
         {
-          "from": "TV_SOUND_AGAIN_UP",
-          "to": "TV_SOUND_AGAIN_UP",
+          "from": "TV_SOUND_UP_AGAIN",
+          "to": "TV_SOUND_UP_AGAIN",
           "sentences": {
             "fr": [
-              "ok",
-              "oui",
-              "volontier",
-              "ça marche"
+              "%acceptance%"
             ],
             "en": [
-              "ok",
-              "yes",
-              "sure",
-              "let's do this"
+              "%acceptance%"
             ]
           }
         }

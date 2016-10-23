@@ -39,18 +39,6 @@ module.exports = _.defaultsDeep({
     },
     log: {
       logger: new smokesignals.Logger('debug')
-    },
-    caches: {
-      stores: [
-        // Example for memory store
-        {
-          name: 'memoryStore',
-          type: 'memory',
-          max: 100,
-          ttl: 60
-        }
-      ],
-      defaults: ['memoryStore']
     }
   }
 }, smokesignals.FailsafeConfig)
