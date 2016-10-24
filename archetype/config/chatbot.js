@@ -7,5 +7,6 @@
  * Configure the Chat Bots
  */
 module.exports = {
-  bots: []
+  bots: [],
+  allowAnonymousUsers: false
 }

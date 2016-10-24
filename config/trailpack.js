@@ -5,6 +5,17 @@
  */
 module.exports = {
   type: 'misc',
+
+  provides: {
+    api: {
+      controllers: ['ChatBotController'],
+      services: ['ChatBotService'],
+      models: ['ChatBot']
+      // ...
+    },
+    config: []
+  },
+
   /**
    * Configure the lifecycle of this pack; that is, how it boots up, and which
    * order it loads relative to other trailpacks.

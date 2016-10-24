@@ -25,7 +25,7 @@ module.exports = class ChatBotService extends Service {
     _.each(sentences, (sentences, lang) => {
       compiledSentences[lang] = []
       for (let i = 0; i < sentences.length; i++) {
-        let paramsName = []
+        const paramsName = []
         const sentence = sentences[i].replace(/(%[a-zA-Z_]+%)/gi, function (matched) {
           matched = matched.replace(/%/g, '')
           const parts = matched.split('_')
@@ -243,6 +243,10 @@ module.exports = class ChatBotService extends Service {
    * @returns {Promise} processed data if found
    */
   interact(userId, lang, userSentence, chatBotId) {
+    if (!userId && !this.app.config.chatbot.allowAnonymousUsers) {
+      return Promise.reject('No user provided')
+    }
+
     return new Promise((response, reject) => {
       this.botCache.get(userId + '_data', (err, data) => {
         if (err) {
@@ -285,14 +289,19 @@ module.exports = class ChatBotService extends Service {
           }
 
           if (result) {
-            this.botCache.set(userId + '_data', result, (err) => {
-              if (err) {
-                reject(err)
-              }
-              else {
-                response(result)
-              }
-            })
+            if (userId) {
+              this.botCache.set(userId + '_data', result, (err) => {
+                if (err) {
+                  reject(err)
+                }
+                else {
+                  response(result)
+                }
+              })
+            }
+            else {
+              response(result)
+            }
           }
           else {
             response({

@@ -1,152 +1,151 @@
 {
-  "bots": {
-    "tv": {
-      "name": "TV",
-      "freeStates": {
-        "TV_CHANNEL": {
-          "name": "Set channel",
-          "sentences": {
-            "fr": [
-              "mets %chaine%",
-              "mets la %number_chaine%"
-            ],
-            "en": [
-              "set channel %number_chaine%",
-              "set %chaine%"
-            ]
-          },
-          "responses": {
-            "fr": [
-              "c'est fait"
-            ],
-            "en": [
-              "Done"
-            ]
-          }
+  "tv": {
+    "name": "TV",
+    "freeStates": {
+      "TV_CHANNEL": {
+        "name": "Set channel",
+        "sentences": {
+          "fr": [
+            "mets %chaine%",
+            "mets la %number_chaine%"
+          ],
+          "en": [
+            "set channel %number_chaine%",
+            "set %chaine%"
+          ]
         },
-        "TV_SOUND_UP": {
-          "name": "Sound up",
-          "sentences": {
-            "fr": [
-              "augmente le (?:son|volume) de %number%",
-              "monte le (?:volume|son)",
-              "augmente le (?:son|volume)"
-            ],
-            "en": [
-              "louder",
-              "increase the volume",
-              "increase the sound",
-              "up the volume",
-              "up the sound"
-            ]
-          },
-          "responses": {
-            "fr": [
-              "voulez vous monter plus ?"
-            ],
-            "en": [
-              "do you want to increase more ?"
-            ]
-          }
-        },
-        "TV_SOUND_DOWN": {
-          "name": "Sound down",
-          "sentences": {
-            "fr": [
-              "baisse le (?:son|volume) de %number_volume%",
-              "baisse le (?:son|volume)",
-              "réduit le (?:son|volume)"
-            ],
-            "en": [
-              "weaker",
-              "decrease the (?:sound,volume)",
-              "reduce the (?:sound,volume)"
-            ]
-          },
-          "responses": {
-            "fr": [
-              "voulez baisser plus ?"
-            ],
-            "en": [
-              "do you want to decrease more ?"
-            ]
-          }
+        "responses": {
+          "fr": [
+            "c'est fait"
+          ],
+          "en": [
+            "Done"
+          ]
         }
       },
-      "nestedStates": {
-        "TV_SOUND_DOWN_AGAIN": {
-          "name": "Encore",
-          "responses": {
-            "fr": [
-              "voulez baisser plus ?"
-            ],
-            "en": [
-              "do you want to decrease more ?"
-            ]
-          }
+      "TV_SOUND_UP": {
+        "name": "Sound up",
+        "sentences": {
+          "fr": [
+            "augmente le (?:son|volume) de %number%",
+            "monte le (?:volume|son)",
+            "augmente le (?:son|volume)"
+          ],
+          "en": [
+            "louder",
+            "increase the volume",
+            "increase the sound",
+            "up the volume",
+            "up the sound"
+          ]
         },
-        "TV_SOUND_UP_AGAIN": {
-          "name": "Encore",
-          "responses": {
-            "fr": [
-              "voulez vous monter plus ?"
-            ],
-            "en": [
-              "do you want to increase more ?"
-            ]
-          }
+        "responses": {
+          "fr": [
+            "voulez vous monter plus ?"
+          ],
+          "en": [
+            "do you want to increase more ?"
+          ]
         }
       },
-      "links": [
-        {
-          "from": "TV_SOUND_UP",
-          "to": "TV_SOUND_UP_AGAIN",
-          "sentences": {
-            "fr": [
-              "%acceptance%"
-            ],
-            "en": [
-              "%acceptance%"
-            ]
-          }
+      "TV_SOUND_DOWN": {
+        "name": "Sound down",
+        "sentences": {
+          "fr": [
+            "baisse le (?:son|volume) de %number_volume%",
+            "baisse le (?:son|volume)",
+            "réduit le (?:son|volume)"
+          ],
+          "en": [
+            "weaker",
+            "decrease the (?:sound,volume)",
+            "reduce the (?:sound,volume)"
+          ]
         },
-        {
-          "from": "TV_SOUND_DOWN",
-          "to": "TV_SOUND_DOWN_AGAIN",
-          "sentences": {
-            "fr": [
-              "%acceptance%"
-            ],
-            "en": [
-              "%acceptance%"
-            ]
-          }
-        },
-        {
-          "from": "TV_SOUND_DOWN_AGAIN",
-          "to": "TV_SOUND_DOWN_AGAIN",
-          "sentences": {
-            "fr": [
-              "%acceptance%"
-            ],
-            "en": [
-              "%acceptance%"
-            ]
-          }
-        },
-        {
-          "from": "TV_SOUND_UP_AGAIN",
-          "to": "TV_SOUND_UP_AGAIN",
-          "sentences": {
-            "fr": [
-              "%acceptance%"
-            ],
-            "en": [
-              "%acceptance%"
-            ]
-          }
+        "responses": {
+          "fr": [
+            "voulez baisser plus ?"
+          ],
+          "en": [
+            "do you want to decrease more ?"
+          ]
         }
-      ]
-    }
+      }
+    },
+    "nestedStates": {
+      "TV_SOUND_DOWN_AGAIN": {
+        "name": "Encore",
+        "responses": {
+          "fr": [
+            "voulez baisser plus ?"
+          ],
+          "en": [
+            "do you want to decrease more ?"
+          ]
+        }
+      },
+      "TV_SOUND_UP_AGAIN": {
+        "name": "Encore",
+        "responses": {
+          "fr": [
+            "voulez vous monter plus ?"
+          ],
+          "en": [
+            "do you want to increase more ?"
+          ]
+        }
+      }
+    },
+    "links": [
+      {
+        "from": "TV_SOUND_UP",
+        "to": "TV_SOUND_UP_AGAIN",
+        "sentences": {
+          "fr": [
+            "%acceptance%"
+          ],
+          "en": [
+            "%acceptance%"
+          ]
+        }
+      },
+      {
+        "from": "TV_SOUND_DOWN",
+        "to": "TV_SOUND_DOWN_AGAIN",
+        "sentences": {
+          "fr": [
+            "%acceptance%"
+          ],
+          "en": [
+            "%acceptance%"
+          ]
+        }
+      },
+      {
+        "from": "TV_SOUND_DOWN_AGAIN",
+        "to": "TV_SOUND_DOWN_AGAIN",
+        "sentences": {
+          "fr": [
+            "%acceptance%"
+          ],
+          "en": [
+            "%acceptance%"
+          ]
+        }
+      },
+      {
+        "from": "TV_SOUND_UP_AGAIN",
+        "to": "TV_SOUND_UP_AGAIN",
+        "sentences": {
+          "fr": [
+            "%acceptance%"
+          ],
+          "en": [
+            "%acceptance%"
+          ]
+        }
+      }
+    ]
   }
 }
+

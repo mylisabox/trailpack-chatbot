@@ -13,7 +13,10 @@ module.exports = _.defaultsDeep({
     services: {}
   },
   config: {
-    chatbots: require('./dialogs/example.json'),
+    chatbot: {
+      bots: require('./dialogs/example.json'),
+      allowAnonymousUsers: true
+    },
     database: {
       stores: {
         sqlitedev: {
@@ -34,8 +37,13 @@ module.exports = _.defaultsDeep({
         require('trailpack-core'),
         require('trailpack-cache'),
         require('trailpack-sequelize'),
+        require('trailpack-express'),
+        require('trailpack-router'),
         require('../')
       ]
+    },
+    web: {
+      express: require('express')
     }
   }
 }, smokesignals.FailsafeConfig)
