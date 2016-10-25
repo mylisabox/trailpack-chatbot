@@ -58,8 +58,8 @@
           ],
           "en": [
             "weaker",
-            "decrease the (?:sound,volume)",
-            "reduce the (?:sound,volume)"
+            "decrease the (?:sound|volume)",
+            "reduce the (?:sound|volume)"
           ]
         },
         "responses": {

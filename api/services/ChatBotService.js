@@ -197,9 +197,12 @@ module.exports = class ChatBotService extends Service {
           }
         }
         results = {
+          botId: bot.name,
           bot: bot,
           action: stateData ? stateData.id : null,
           state: stateData,
+          lang: lang,
+          userSentence: userSentence,
           match: matches,
           fields: fields
         }
@@ -247,7 +250,7 @@ module.exports = class ChatBotService extends Service {
       return Promise.reject('No user provided')
     }
 
-    return new Promise((response, reject) => {
+    return new Promise((resolve, reject) => {
       this.botCache.get(userId + '_data', (err, data) => {
         if (err) {
           reject(err)
@@ -289,24 +292,50 @@ module.exports = class ChatBotService extends Service {
           }
 
           if (result) {
+            const hook = this.app.config.chatbot.hooks[result.action]
             if (userId) {
               this.botCache.set(userId + '_data', result, (err) => {
                 if (err) {
                   reject(err)
                 }
                 else {
-                  response(result)
+                  if (hook) {
+                    hook(this.app, result).then(resolve).catch(reject)
+                  }
+                  else {
+                    resolve(result)
+                  }
                 }
               })
             }
             else {
-              response(result)
+              if (hook) {
+                hook(this.app, result).then(resolve).catch(reject)
+              }
+              else {
+                resolve(result)
+              }
             }
           }
           else {
-            response({
-              action: 'UNKNOWN'
-            })
+            const defaultAnswer = this.app.config.chatbot.defaultAnswer
+            if (defaultAnswer) {
+              defaultAnswer(this.app, {
+                userId: userId,
+                userSentence: userSentence,
+                botId: chatBotId,
+                lang: lang
+              }).then(resolve).catch(reject)
+            }
+            else {
+              resolve({
+                action: 'UNKNOWN',
+                userId: userId,
+                userSentence: userSentence,
+                botId: chatBotId,
+                lang: lang
+              })
+            }
           }
         }
       })

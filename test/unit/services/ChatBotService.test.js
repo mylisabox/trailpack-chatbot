@@ -59,12 +59,34 @@ describe('ChatBotService', () => {
     }).catch(done)
   })
 
-
   it('should return the correct nested command', done => {
     global.app.services.ChatBotService.interact(1, 'fr', 'oui').then(result => {
       assert(result)
       assert.equal(result.action, 'TV_SOUND_DOWN_AGAIN')
       assert(result.fields)
+      done()
+    }).catch(done)
+  })
+
+  it('should return the unknow response on wrong command', done => {
+    const sentence = 'coucou comment va ?'
+    global.app.services.ChatBotService.interact(1, 'fr', sentence).then(result => {
+      assert(result)
+      assert.equal(result.action, 'UNKNOWN')
+      assert.equal(result.lang, 'fr')
+      assert.equal(result.userId, 1)
+      assert.equal(result.userSentence, sentence)
+      done()
+    }).catch(done)
+  })
+
+  it('should return the correct command with hook executed', done => {
+    global.app.services.ChatBotService.interact(1, 'en', 'set channel 3').then(result => {
+      assert(result)
+      assert.equal(result.action, 'TV_CHANNEL')
+      assert.equal(result.lang, 'en')
+      assert.equal(result.myAddition, 'ok')
+      assert.equal(result.fields.chaine, 3)
       done()
     }).catch(done)
   })

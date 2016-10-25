@@ -15,7 +15,13 @@ module.exports = _.defaultsDeep({
   config: {
     chatbot: {
       bots: require('./dialogs/example.json'),
-      allowAnonymousUsers: true
+      allowAnonymousUsers: true,
+      hooks: {
+        'TV_CHANNEL': (app, data) => {
+          data.myAddition = 'ok'
+          return Promise.resolve(data)
+        }
+      }
     },
     database: {
       stores: {
