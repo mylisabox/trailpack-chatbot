@@ -7,14 +7,24 @@ const _ = require('lodash')
 module.exports = class ChatbotTrailpack extends Trailpack {
 
   /**
-   * TODO document method
+   * Check if trailpack-cache is installed
    */
   validate() {
+    if (!this.app.packs.cache) {
+      return Promise.reject(
+        new Error('trailpack-cache need to be installed in order to make chatbot working')
+      )
+    }
 
+    if (!this.app.config.chatbot) {
+      return Promise.reject(
+        new Error('config.chatbot doesn\'t exist, please correct this')
+      )
+    }
   }
 
   /**
-   * TODO document method
+   * Compile route with prefix if needed
    */
   configure() {
     const prefix = _.get(this.app.config, 'chatbot.prefix') || _.get(this.app.config, 'footprints.prefix')

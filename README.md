@@ -50,9 +50,16 @@ Setup your bots.
 ```js
 // config/chatbot.js
 module.exports = {
-  bots: []
+  bots: {}, // put you bots definitions here (see example below)
+  allowAnonymousUsers: false, // allow to use basic chatbot command (no nested states for unlogged user
+  defaultAnswer: (app, data) => { // set a default answer when no bot recognize the sentence
+    data.action = 'UNKNOWN'
+    return Promise.resolve(data)
+  },
+  hooks: {} // set some hooks on bot states to add/modify the bot response 
 }
 ```
+Default config [here](https://github.com/mylisabox/trailpack-chatbot/blob/master/archetype/config/chatbot.js)
 
 Full example of bot [here](https://github.com/mylisabox/trailpack-chatbot/blob/master/test/dialogs/example.json)
 

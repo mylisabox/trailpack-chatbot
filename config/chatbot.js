@@ -19,7 +19,7 @@ module.exports = {
    */
   allowAnonymousUsers: false,
   /**
-   * When bot
+   * When bot doesn't understand the sentence, you can return a default answer based on data
    * @param app Trails application
    * @param data User sentence, lang, botId, userId
    * @returns Promise
