@@ -278,7 +278,12 @@ module.exports = class ChatBotService extends Service {
           if (!result) {
             if (chatBotId) {
               const bot = _.find(this.chatBots, {name: chatBotId})
-              result = this._searchMatchForFreeStates(bot, lang, userSentence)
+              if (bot) {
+                result = this._searchMatchForFreeStates(bot, lang, userSentence)
+              }
+              else {
+                reject(new Error('unknow bot ' + chatBotId))
+              }
             }
             else {
               for (let i = 0; i < this.chatBots.length; i++) {
