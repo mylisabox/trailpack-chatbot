@@ -2,6 +2,7 @@
 :package: Trailpack to create chatbot under your Trails projects
 
 [![Gitter][gitter-image]][gitter-url]
+[![Known Vulnerabilities][snyk-image]][snyk-url]
 [![NPM version][npm-image]][npm-url]
 [![Linux + OSX Build Status][ci-image]][ci-url]
 [![Code Climate][codeclimate-image]][codeclimate-url]
@@ -70,6 +71,8 @@ information on how our projects are organized and how to get started.
 ## License
 [MIT](https://github.com/mylisabox/trailpack-chatbot/blob/master/LICENSE)
 
+[snyk-image]: https://snyk.io/test/github/mylisabox/trailpack-chatbot/badge.svg
+[snyk-url]: https://snyk.io/test/github/mylisabox/trailpack-chatbot/
 [npm-image]: https://img.shields.io/npm/v/trailpack-chatbot.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/trailpack-chatbot
 [ci-image]: https://img.shields.io/travis/mylisabox/trailpack-chatbot.svg?style=flat-square&label=Linux%20/%20OSX

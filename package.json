@@ -1,6 +1,6 @@
 {
   "name": "trailpack-chatbot",
-  "version": "1.0.0-alpha-1",
+  "version": "1.0.0-alpha-2",
   "description": "Trailpack to manage basic chat bots from Trails project ",
   "homepage": "https://github.com/mylisabox/trailpack-chatbot",
   "author": {
@@ -17,30 +17,35 @@
     "bot",
     "chatbot"
   ],
+  "pre-commit": [
+    "test"
+  ],
   "dependencies": {
+    "snyk": "^1.19.1",
     "trailpack": "^1.0.5",
     "trails-controller": "^1.0.0-beta-2",
     "trails-model": "^1.0.0-beta-2",
     "trails-service": "^1.0.0-beta-2"
   },
   "devDependencies": {
-    "eslint": "^3.8.1",
-    "eslint-config-trails": "^1.0.7",
+    "eslint": "^3.9.0",
+    "eslint-config-trails": "^1.0.8",
     "express": "^4.14.0",
     "lodash": "^4.16.4",
     "mocha": "^3.1.2",
+    "pre-commit": "^1.1.3",
     "smokesignals": "^1.2.2",
-    "sqlite3": "^3.1.6",
+    "sqlite3": "^3.1.8",
     "supertest": "^2.0.1",
-    "trailpack-cache": "^1.0.0",
+    "trailpack-cache": "^1.0.2",
     "trailpack-core": "^1.0.1",
     "trailpack-express": "^1.0.14",
     "trailpack-router": "^1.0.8",
-    "trailpack-sequelize": "^1.1.0",
+    "trailpack-sequelize": "^1.1.1",
     "trails": "^1.1.0"
   },
   "scripts": {
-    "test": "eslint . && mocha"
+    "test": "snyk test && eslint . && mocha"
   },
   "engines": {
     "node": ">= 4.0.0"
