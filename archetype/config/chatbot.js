@@ -13,6 +13,10 @@ module.exports = {
   defaultLang: 'en',
 
   /**
+   * Prefix for Chatbot routes, use the one in trailpack-footprints if installed and not override here
+   */
+  //prefix: '/',
+  /**
    * Bots definitions example
    * for more
    * @see https://github.com/mylisabox/trailpack-chatbot/blob/master/test/dialogs/example.json
