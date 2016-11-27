@@ -14,6 +14,10 @@ module.exports = {
    */
   bots: {},
   /**
+   * Default language
+   */
+  defaultLang: 'en',
+  /**
    * Allow bot to answer without a connected user
    * This will answer very basic sentence as there no state for the user (this mean nested states are not handled)
    */
@@ -32,5 +36,10 @@ module.exports = {
    * Hooks can be used to influance the answer
    * The return data will be the one returned to the user
    */
-  hooks: {}
+  hooks: {},
+  /**
+   * Params that can be used to parse the answer
+   * myKey : rexExp or Array<String>
+   */
+  params: {}
 }

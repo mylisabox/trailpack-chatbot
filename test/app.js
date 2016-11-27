@@ -21,6 +21,13 @@ module.exports = _.defaultsDeep({
           data.myAddition = 'ok'
           return Promise.resolve(data)
         }
+      },
+      params: {
+        custom: '(custom|match)',
+        customArray: ['custom', 'match'],
+        customMethod: app => {
+          return Promise.resolve(['custom', 'match'])
+        }
       }
     },
     database: {

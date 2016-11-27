@@ -8,6 +8,11 @@
  */
 module.exports = {
   /**
+   * Default language
+   */
+  defaultLang: 'en',
+
+  /**
    * Bots definitions example
    * for more
    * @see https://github.com/mylisabox/trailpack-chatbot/blob/master/test/dialogs/example.json
@@ -133,5 +138,10 @@ module.exports = {
       data.myAddition = 'ok'
       return Promise.resolve(data)
     }
-  }
+  },
+  /**
+   * Params that can be used to parse the answer
+   * myKey : rexExp or Array<String>
+   */
+  params: {}
 }

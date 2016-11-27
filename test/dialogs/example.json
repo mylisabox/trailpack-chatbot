@@ -70,6 +70,48 @@
             "do you want to decrease more ?"
           ]
         }
+      },
+      "TV_CUSTOM": {
+        "name": "Custom",
+        "sentences": {
+          "fr": [
+            "ma phrase est %custom%"
+          ]
+        },
+        "responses": {
+          "fr": [
+          ],
+          "en": [
+          ]
+        }
+      },
+      "TV_CUSTOM_ARRAY": {
+        "name": "Custom array",
+        "sentences": {
+          "fr": [
+            "test du param %customArray%"
+          ]
+        },
+        "responses": {
+          "fr": [
+          ],
+          "en": [
+          ]
+        }
+      },
+      "TV_CUSTOM_METHOD": {
+        "name": "Custom method",
+        "sentences": {
+          "fr": [
+            "mon param %customMethod%"
+          ]
+        },
+        "responses": {
+          "fr": [
+          ],
+          "en": [
+          ]
+        }
       }
     },
     "nestedStates": {

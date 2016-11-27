@@ -29,10 +29,19 @@ module.exports = class ChatBot extends Model {
       data: {
         type: Sequelize.STRING,
         get: function () {
-          return JSON.parse(this.getDataValue('data'))
+          let data = null
+          if (this.getDataValue('data')) {
+            data = JSON.parse(this.getDataValue('data'))
+          }
+          return data
         },
         set: function (value) {
-          this.setDataValue('data', JSON.stringify(value))
+          if (value) {
+            this.setDataValue('data', JSON.stringify(value))
+          }
+          else {
+            this.setDataValue('data', null)
+          }
         },
         allowNull: false
       }

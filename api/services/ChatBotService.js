@@ -14,6 +14,39 @@ const mapParams = {
  * @description Manage chatbots
  */
 module.exports = class ChatBotService extends Service {
+  _prepareParam(key, value) {
+    if (Array.isArray(value)) {
+      mapParams[key] = `(${value.join('|')})`
+    }
+    else if (_.isFunction(value)) {
+      return value(this.app).then(result => {
+        if (Array.isArray(result)) {
+          mapParams[key] = `(${result.join('|')})`
+        }
+        else {
+          mapParams[key] = result
+        }
+      }).catch(err => mapParams[key] = null)
+    }
+    else if (_.isPlainObject(value)) {
+      const keys = Object.keys(value)
+      mapParams[key] = `(${keys.join('|')})`
+    }
+    else {
+      mapParams[key] = value
+    }
+    return Promise.resolve()
+  }
+
+  _prepareParams() {
+    _.merge(mapParams, this.app.config.chatbot.params)
+    const promises = []
+    _.each(mapParams, (value, key) => {
+      promises.push(this._prepareParam(key, value))
+    })
+    return Promise.all(promises)
+  }
+
   /**
    * Compile sentences to change fields into regexp
    * @param sentences to compile
@@ -53,8 +86,8 @@ module.exports = class ChatBotService extends Service {
    * @private
    */
   _prepareChatBot(botId, botData) {
-    botData.id = botId
-
+    botData.displayName = botData.name
+    botData.name = botId
     _.each(botData.links, link => {
       link.compiledSentences = this._compileSentences(link.sentences)
     })
@@ -73,6 +106,12 @@ module.exports = class ChatBotService extends Service {
         return link.from === id
       })
     })
+    return _.merge({
+      name: botData.id,
+      displayName: botData.name,
+      enabled: botData.enabled,
+      data: botData
+    }, _.omit(botData, ['links', 'freeStates', 'nestedStates']))
   }
 
   /**
@@ -83,7 +122,8 @@ module.exports = class ChatBotService extends Service {
   init(initialData) {
     this.botCache = this.app.services.CacheService.getCaches()
     initialData = _.cloneDeep(initialData)
-    return this.app.orm.ChatBot.find({
+    this.chatBots = []
+    return this._prepareParams().then(() => this.app.orm.ChatBot.findAll({
       where: {
         enabled: true
       }
@@ -92,23 +132,16 @@ module.exports = class ChatBotService extends Service {
         //initialData
         const bots = []
         _.forEach(initialData, (botData, botId) => {
-          this._prepareChatBot(botId, botData)
-
-          bots.push({
-            name: botData.id,
-            displayName: botData.name,
-            enabled: botData.enabled,
-            data: botData
-          })
+          bots.push(this._prepareChatBot(botId, botData))
         })
         return this.app.orm.ChatBot.bulkCreate(bots).then(results => {
-          this.chatBots = results
+          this.chatBots = results || []
         })
       }
       else {
-        this.chatBots = results
+        this.chatBots = results || []
       }
-    })
+    }))
   }
 
   /**
@@ -118,11 +151,11 @@ module.exports = class ChatBotService extends Service {
    * @returns {Promise.<TResult>}
    */
   addBot(botId, botData) {
-    this._prepareChatBot(botId, botData)
-    return this.app.orm.ChatBot.create(botData).then(result => {
-      this.chatBots.push(result)
-      return result
-    })
+    return this._prepareParams().then(() => this.app.orm.ChatBot.create(this._prepareChatBot(botId, botData))
+      .then(result => {
+        this.chatBots.push(result)
+        return result
+      }))
   }
 
   /**
@@ -145,7 +178,7 @@ module.exports = class ChatBotService extends Service {
    * @returns {Promise.<TResult>}
    */
   updateBot(botId, botData) {
-    return this.app.orm.ChatBot.update(botData, {where: {name: botId}}).then(result => {
+    return this.app.orm.ChatBot.update(this._prepareChatBot(botId, botData), {where: {name: botId}}).then(result => {
       this.reloadBot(botId)
       return result
     })

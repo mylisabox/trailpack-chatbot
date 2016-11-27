@@ -90,4 +90,32 @@ describe('ChatBotService', () => {
       done()
     }).catch(done)
   })
+
+  it('should return the correct command with custom param ', done => {
+    global.app.services.ChatBotService.interact(1, 'fr', 'ma phrase est custom').then(result => {
+      assert(result)
+      assert.equal(result.action, 'TV_CUSTOM')
+      assert.equal(result.lang, 'fr')
+      assert.equal(result.fields.custom, 'custom')
+      done()
+    }).catch(done)
+  })
+  it('should return the correct command with custom array param ', done => {
+    global.app.services.ChatBotService.interact(1, 'fr', 'test du param custom').then(result => {
+      assert(result)
+      assert.equal(result.action, 'TV_CUSTOM_ARRAY')
+      assert.equal(result.lang, 'fr')
+      assert.equal(result.fields.customArray, 'custom')
+      done()
+    }).catch(done)
+  })
+  it('should return the correct command with custom method param ', done => {
+    global.app.services.ChatBotService.interact(1, 'fr', 'mon param match').then(result => {
+      assert(result)
+      assert.equal(result.action, 'TV_CUSTOM_METHOD')
+      assert.equal(result.lang, 'fr')
+      assert.equal(result.fields.customMethod, 'match')
+      done()
+    }).catch(done)
+  })
 })
