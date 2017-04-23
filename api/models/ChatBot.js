@@ -1,6 +1,6 @@
 'use strict'
 
-const Model = require('trails-model')
+const Model = require('trails/model')
 
 /**
  * @module ChatBot
@@ -41,6 +41,25 @@ module.exports = class ChatBot extends Model {
           }
           else {
             this.setDataValue('data', null)
+          }
+        },
+        allowNull: false
+      },
+      originalData: {
+        type: Sequelize.STRING,
+        get: function () {
+          let data = null
+          if (this.getDataValue('originalData')) {
+            data = JSON.parse(this.getDataValue('originalData'))
+          }
+          return data
+        },
+        set: function (value) {
+          if (value) {
+            this.setDataValue('originalData', JSON.stringify(value))
+          }
+          else {
+            this.setDataValue('originalData', null)
           }
         },
         allowNull: false

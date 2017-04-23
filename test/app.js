@@ -46,8 +46,6 @@ module.exports = _.defaultsDeep({
     },
     main: {
       packs: [
-        smokesignals.Trailpack,
-        require('trailpack-core'),
         require('trailpack-cache'),
         require('trailpack-sequelize'),
         require('trailpack-express'),

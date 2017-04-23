@@ -1,6 +1,6 @@
 'use strict'
 
-const Service = require('trails-service')
+const Service = require('trails/service')
 const _ = require('lodash')
 
 const mapParams = {
@@ -86,32 +86,66 @@ module.exports = class ChatBotService extends Service {
    * @private
    */
   _prepareChatBot(botId, botData) {
-    botData.displayName = botData.name
-    botData.name = botId
-    _.each(botData.links, link => {
-      link.compiledSentences = this._compileSentences(link.sentences)
-    })
-
-    _.each(botData.freeStates, (data, id) => {
-      data.id = id
-      data.compiledSentences = this._compileSentences(data.sentences)
-      data.links = botData.links.filter(link => {
-        return link.from === id
+    let data
+    if (botData.originalData) {
+      botData.data.links = botData.originalData.links
+      botData.data.freeStates = botData.originalData.freeStates
+      botData.data.nestedStates = botData.originalData.nestedStates
+      _.each(botData.data.links, link => {
+        link.compiledSentences = this._compileSentences(link.sentences)
       })
-    })
 
-    _.each(botData.nestedStates, (data, id) => {
-      data.id = id
-      data.links = botData.links.filter(link => {
-        return link.from === id
+      _.each(botData.data.freeStates, (dataState, id) => {
+        dataState.id = id
+        dataState.compiledSentences = this._compileSentences(dataState.sentences)
+        dataState.links = botData.data.links.filter(link => {
+          return link.from === id
+        })
       })
-    })
-    return _.merge({
-      name: botData.id,
-      displayName: botData.name,
-      enabled: botData.enabled,
-      data: botData
-    }, _.omit(botData, ['links', 'freeStates', 'nestedStates']))
+
+      _.each(botData.data.nestedStates, (dataState, id) => {
+        dataState.id = id
+        dataState.links = botData.data.links.filter(link => {
+          return link.from === id
+        })
+      })
+
+      data = botData
+    }
+    else {
+      data = _.cloneDeep(botData)
+      data.displayName = botData.name
+      data.name = botId
+      _.each(data.links, link => {
+        link.compiledSentences = this._compileSentences(link.sentences)
+      })
+
+      _.each(data.freeStates, (dataState, id) => {
+        dataState.id = id
+        dataState.compiledSentences = this._compileSentences(dataState.sentences)
+        dataState.links = data.links.filter(link => {
+          return link.from === id
+        })
+      })
+
+      _.each(data.nestedStates, (dataState, id) => {
+        dataState.id = id
+        dataState.links = data.links.filter(link => {
+          return link.from === id
+        })
+      })
+      data = _.merge({
+        name: botId,
+        displayName: botData.name,
+        data: data,
+        originalData: {
+          links: botData.links,
+          freeStates: botData.freeStates,
+          nestedStates: botData.nestedStates
+        }
+      }, _.omit(botData, ['name', 'links', 'freeStates', 'nestedStates']))
+    }
+    return data
   }
 
   /**
@@ -136,10 +170,11 @@ module.exports = class ChatBotService extends Service {
         })
         return this.app.orm.ChatBot.bulkCreate(bots).then(results => {
           this.chatBots = results || []
+          return results
         })
       }
       else {
-        this.chatBots = results || []
+        return this.reloadBots()
       }
     }))
   }
@@ -202,6 +237,40 @@ module.exports = class ChatBotService extends Service {
       }
       return result
     })
+  }
+
+  reloadBots() {
+    return this._prepareParams().then(() => this.app.orm.ChatBot.findAll({
+      where: {
+        enabled: true
+      }
+    }).then(results => {
+      if (results) {
+        const bots = []
+        _.forEach(results, (botData) => {
+          const data = this._prepareChatBot(botData.name, botData.toJSON())
+          bots.push(this.app.orm.ChatBot.update(
+            data,
+            {
+              where: {
+                name: botData.name
+              }
+            }
+          ))
+        })
+        return Promise.all(bots).then(results => {
+          return this.app.orm.ChatBot.findAll({
+            where: {
+              enabled: true
+            }
+          }).then(results => {
+            this.chatBots = results || []
+            return results
+          })
+        })
+      }
+      return results
+    }))
   }
 
   /**
