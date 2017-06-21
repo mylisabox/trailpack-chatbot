@@ -303,8 +303,12 @@ module.exports = class ChatBotService extends Service {
         const fields = {}
         if (matches.length > 1) {
           for (let i = 1; i < matches.length; i++) {
-            const match = matches[i]
-            fields[sentenceData.fields[i - 1]] = match
+            let value = matches[i]
+            const type = sentenceData.fields[i - 1]
+            if (type.indexOf('number') !== -1) {
+              value = parseInt(value)
+            }
+            fields[type] = value
           }
         }
         results = {
