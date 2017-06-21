@@ -162,19 +162,28 @@ module.exports = class ChatBotService extends Service {
         enabled: true
       }
     }).then(results => {
+      const bots = []
+      _.forEach(initialData, (botData, botId) => {
+        bots.push(this._prepareChatBot(botId, botData))
+      })
+
       if (!results || results.length === 0) {
-        //initialData
-        const bots = []
-        _.forEach(initialData, (botData, botId) => {
-          bots.push(this._prepareChatBot(botId, botData))
-        })
         return this.app.orm.ChatBot.bulkCreate(bots).then(results => {
           this.chatBots = results || []
           return results
         })
       }
       else {
-        return this.reloadBots()
+        const updates = []
+        for (let bot of bots) {
+          if (results.filter(result => result.name === bot.name.toLowerCase()).length > 0) {
+            updates.push(this.app.orm.ChatBot.update(bot, { where: { name: bot.name } }))
+          }
+          else {
+            updates.push(this.app.orm.ChatBot.create(bot))
+          }
+        }
+        return Promise.all(updates).then(results => this.reloadBots())
       }
     }))
   }
@@ -199,8 +208,8 @@ module.exports = class ChatBotService extends Service {
    * @returns {Promise.<TResult>}
    */
   deleteBot(botId) {
-    return this.app.orm.ChatBot.destroy({where: {name: botId}}).then(result => {
-      const index = _.indexOf(this.chatBots, _.find(this.chatBots, {name: botId}))
+    return this.app.orm.ChatBot.destroy({ where: { name: botId } }).then(result => {
+      const index = _.indexOf(this.chatBots, _.find(this.chatBots, { name: botId }))
       this.chatBots.splice(index, 1)
       return result
     })
@@ -213,7 +222,7 @@ module.exports = class ChatBotService extends Service {
    * @returns {Promise.<TResult>}
    */
   updateBot(botId, botData) {
-    return this.app.orm.ChatBot.update(this._prepareChatBot(botId, botData), {where: {name: botId}}).then(result => {
+    return this.app.orm.ChatBot.update(this._prepareChatBot(botId, botData), { where: { name: botId } }).then(result => {
       this.reloadBot(botId)
       return result
     })
@@ -232,7 +241,7 @@ module.exports = class ChatBotService extends Service {
     }).then(result => {
       if (result) {
         // Find item index using indexOf+find
-        const index = _.indexOf(this.chatBots, _.find(this.chatBots, {name: botId}))
+        const index = _.indexOf(this.chatBots, _.find(this.chatBots, { name: botId }))
         this.chatBots.splice(index, 1, result)
       }
       return result
@@ -379,7 +388,7 @@ module.exports = class ChatBotService extends Service {
           // no result in nested data or we want to test free states
           if (!result) {
             if (chatBotId) {
-              const bot = _.find(this.chatBots, {name: chatBotId})
+              const bot = _.find(this.chatBots, { name: chatBotId })
               if (bot) {
                 result = this._searchMatchForFreeStates(bot, lang, userSentence)
               }
