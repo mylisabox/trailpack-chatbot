@@ -34,7 +34,7 @@ module.exports = {
       emit: []
     },
     initialize: {
-      listen: ['trailpack:sequelize:initialized'],
+      listen: ['trailpack:cache:initialized', 'trailpack:sequelize:initialized'],
       emit: []
     }
   }

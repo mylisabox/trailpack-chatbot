@@ -154,7 +154,7 @@ module.exports = class ChatBotService extends Service {
    * @returns {Promise.<ChatBot>}
    */
   init(initialData) {
-    this.botCache = this.app.services.CacheService.getCaches()
+    this.botCache = this.app.services.CacheService.getStore('chatbot')
     initialData = _.cloneDeep(initialData)
     this.chatBots = []
     return this._prepareParams().then(() => this.app.orm.ChatBot.findAll({
@@ -175,7 +175,7 @@ module.exports = class ChatBotService extends Service {
       }
       else {
         const updates = []
-        for (let bot of bots) {
+        for (const bot of bots) {
           if (results.filter(result => result.name === bot.name.toLowerCase()).length > 0) {
             updates.push(this.app.orm.ChatBot.update(bot, { where: { name: bot.name } }))
           }

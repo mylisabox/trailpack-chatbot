@@ -13,6 +13,13 @@ module.exports = _.defaultsDeep({
     services: {}
   },
   config: {
+    caches: {
+      stores: [{
+        name: 'chatbot',
+        type: 'memory',
+        ttl: 0
+      }]
+    },
     chatbot: {
       bots: require('./dialogs/example.json'),
       allowAnonymousUsers: true,
@@ -46,8 +53,8 @@ module.exports = _.defaultsDeep({
     },
     main: {
       packs: [
-        require('trailpack-cache'),
         require('trailpack-sequelize'),
+        require('trailpack-cache'),
         require('trailpack-express'),
         require('trailpack-router'),
         require('../')

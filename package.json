@@ -21,26 +21,26 @@
     "test"
   ],
   "dependencies": {
-    "trailpack": "^2.1.0"
+    "trailpack": "^2.1.2"
   },
   "devDependencies": {
-    "eslint": "^3.13.1",
-    "eslint-config-trails": "^2.0.6",
+    "eslint": "^4.0.0",
+    "eslint-config-trails": "^3.0.0",
     "express": "^4.14.0",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0",
     "pre-commit": "^1.2.2",
-    "smokesignals": "^2.1.1",
+    "smokesignals": "^3.0.3",
     "sqlite3": "^3.1.8",
     "supertest": "^2.0.1",
-    "trailpack-cache": "^1.0.2",
-    "trailpack-express": "^2.0.0",
+    "trailpack-cache": "^3.0.0",
+    "trailpack-express": "^2.0.4",
     "trailpack-router": "^2.1.0",
     "trailpack-sequelize": "^2.0.0",
-    "trails": "^2.0.1"
+    "trails": "^2.0.2"
   },
   "scripts": {
-    "test": "eslint . && mocha"
+    "test": "eslint --fix . && mocha"
   },
   "engines": {
     "node": ">= 4.0.0"

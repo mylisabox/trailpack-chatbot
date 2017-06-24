@@ -43,7 +43,9 @@ module.exports = {
 ```
 
 ## Dependencies 
-In order to work you need to install and configure [trailpack-cache](https://github.com/trailsjs/trailpack-cache)
+In order to work you need to install and configure [trailpack-cache](https://github.com/trailsjs/trailpack-cache) with a memory store
+
+It's needed to keep in cache the last answer of the user and his context to calculate the next action
 
 ## Config
 Setup your bots.
@@ -58,6 +60,17 @@ module.exports = {
     return Promise.resolve(data)
   },
   hooks: {} // set some hooks on bot states to add/modify the bot response 
+}
+
+// config/caches.js minimum config
+module.exports = {
+  stores: [
+      {
+        name: 'chatbot',
+        type: 'memory',
+        ttl: 0
+      }
+    ] 
 }
 ```
 Default config [here](https://github.com/mylisabox/trailpack-chatbot/blob/master/archetype/config/chatbot.js)
