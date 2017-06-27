@@ -313,7 +313,7 @@ module.exports = class ChatBotService extends Service {
         }
         results = {
           botId: bot.name,
-          bot: bot,
+          bot: bot.toJSON ? bot.toJSON() : bot,
           action: stateData ? stateData.id : null,
           state: stateData,
           lang: lang,
@@ -413,6 +413,7 @@ module.exports = class ChatBotService extends Service {
 
           if (result) {
             const hook = this.app.config.chatbot.hooks[result.action]
+            const publicResult = _.omit(result, ['bot', 'state', 'match'])
             if (userId) {
               this.botCache.set(userId + '_data', result, (err) => {
                 if (err) {
@@ -420,20 +421,20 @@ module.exports = class ChatBotService extends Service {
                 }
                 else {
                   if (hook) {
-                    hook(this.app, result).then(resolve).catch(reject)
+                    hook(this.app, publicResult).then(resolve).catch(reject)
                   }
                   else {
-                    resolve(result)
+                    resolve(publicResult)
                   }
                 }
               })
             }
             else {
               if (hook) {
-                hook(this.app, result).then(resolve).catch(reject)
+                hook(this.app, publicResult).then(resolve).catch(reject)
               }
               else {
-                resolve(result)
+                resolve(publicResult)
               }
             }
           }
