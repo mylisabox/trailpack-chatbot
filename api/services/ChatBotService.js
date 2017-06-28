@@ -316,6 +316,8 @@ module.exports = class ChatBotService extends Service {
           bot: bot.toJSON ? bot.toJSON() : bot,
           action: stateData ? stateData.id : null,
           state: stateData,
+          responses: stateData && stateData.responses ? stateData.responses[lang] : [],
+          response: stateData && stateData.responses ? _.sample(stateData.responses[lang]) : '',
           lang: lang,
           userSentence: userSentence,
           match: matches,
