@@ -99,6 +99,34 @@
           ]
         }
       },
+      "TV_CUSTOM_OBJECT": {
+        "name": "Custom object",
+        "sentences": {
+          "fr": [
+            "test du param %customObject%"
+          ]
+        },
+        "responses": {
+          "fr": [
+          ],
+          "en": [
+          ]
+        }
+      },
+      "TV_CUSTOM_COMPLEX_OBJECT": {
+        "name": "Custom complex object",
+        "sentences": {
+          "fr": [
+            "test du param %customComplexObject%"
+          ]
+        },
+        "responses": {
+          "fr": [
+          ],
+          "en": [
+          ]
+        }
+      },
       "TV_CUSTOM_METHOD": {
         "name": "Custom method",
         "sentences": {

@@ -34,6 +34,16 @@ module.exports = _.defaultsDeep({
         customArray: ['custom', 'match'],
         customMethod: app => {
           return Promise.resolve(['custom', 'match'])
+        },
+        customObject: {
+          red: '#F00',
+          blue: '#00F'
+        },
+        customComplexObject: {
+          test: {
+            keywords: ['red', 'rouge'],
+            value: '#F00'
+          }
         }
       }
     },

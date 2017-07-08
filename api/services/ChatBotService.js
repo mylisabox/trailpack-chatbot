@@ -29,7 +29,15 @@ module.exports = class ChatBotService extends Service {
       }).catch(err => mapParams[key] = null)
     }
     else if (_.isPlainObject(value)) {
-      const keys = Object.keys(value)
+      let keys = Object.keys(value)
+      if (value[keys[0]].keywords) {
+        let allKeywords = []
+        for (const keyParam of keys) {
+          allKeywords = allKeywords.concat(value[keyParam].keywords)
+        }
+        keys = allKeywords
+      }
+
       mapParams[key] = `(${keys.join('|')})`
     }
     else {
@@ -305,8 +313,24 @@ module.exports = class ChatBotService extends Service {
           for (let i = 1; i < matches.length; i++) {
             let value = matches[i]
             const type = sentenceData.fields[i - 1]
+            const param = this.app.config.chatbot.params[type]
             if (type.indexOf('number') !== -1) {
               value = parseInt(value)
+            }
+            else if (_.isPlainObject(param)) {
+              const keys = Object.keys(param)
+              if (param[keys[0]].keywords) {
+                for (const key of keys) {
+                  const filteredParam = param[key].keywords.filter(keyword => keyword === value)
+                  if (filteredParam.length === 1) {
+                    value = key
+                    break
+                  }
+                }
+              }
+              else {
+                value = param[value]
+              }
             }
             fields[type] = value
           }

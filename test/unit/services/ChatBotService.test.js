@@ -100,6 +100,27 @@ describe('ChatBotService', () => {
       done()
     }).catch(done)
   })
+
+  it('should return the correct command with custom object param ', done => {
+    global.app.services.ChatBotService.interact(1, 'fr', 'test du param red').then(result => {
+      assert(result)
+      assert.equal(result.action, 'TV_CUSTOM_OBJECT')
+      assert.equal(result.lang, 'fr')
+      assert.equal(result.fields.customObject, '#F00')
+      done()
+    }).catch(done)
+  })
+
+  it('should return the correct command with custom complex object param ', done => {
+    global.app.services.ChatBotService.interact(1, 'fr', 'test du param rouge').then(result => {
+      assert(result)
+      assert.equal(result.action, 'TV_CUSTOM_COMPLEX_OBJECT')
+      assert.equal(result.lang, 'fr')
+      assert.equal(result.fields.customComplexObject, 'test')
+      done()
+    }).catch(done)
+  })
+
   it('should return the correct command with custom array param ', done => {
     global.app.services.ChatBotService.interact(1, 'fr', 'test du param custom').then(result => {
       assert(result)
@@ -109,6 +130,7 @@ describe('ChatBotService', () => {
       done()
     }).catch(done)
   })
+
   it('should return the correct command with custom method param ', done => {
     global.app.services.ChatBotService.interact(1, 'fr', 'mon param match').then(result => {
       assert(result)
