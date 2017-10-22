@@ -6,6 +6,7 @@ const _ = require('lodash')
 const mapParams = {
   'number': '([0-9]+)',
   'text': '([a-zA-Z]+)',
+  'fulltext': '([0-9a-zA-Z ]+)',
   'acceptance': '^(ok|oui|yes|ouai|no problem|aucun problème|ça marche|it\'s ok|sure|volontier|let\'s do this)$',
 }
 
