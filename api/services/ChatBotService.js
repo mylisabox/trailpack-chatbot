@@ -303,52 +303,54 @@ module.exports = class ChatBotService extends Service {
    */
   _searchMatch(bot, stateData, lang, userSentence, sentences) {
     let results = null
-    for (let j = 0; j < sentences[lang].length; j++) {
-      const sentenceData = sentences[lang][j]
-      const reg = new RegExp(sentenceData.sentence, 'gi')
+    if (sentences[lang]) {
+      for (let j = 0; j < sentences[lang].length; j++) {
+        const sentenceData = sentences[lang][j]
+        const reg = new RegExp(sentenceData.sentence, 'gi')
 
-      const matches = reg.exec(userSentence)
-      if (matches) {
-        const fields = {}
-        if (matches.length > 1) {
-          for (let i = 1; i < matches.length; i++) {
-            let value = matches[i]
-            const type = sentenceData.fields[i - 1]
-            const param = this.app.config.chatbot.params[type]
-            if (type.indexOf('number') !== -1) {
-              value = parseInt(value)
-            }
-            else if (_.isPlainObject(param)) {
-              const keys = Object.keys(param)
-              if (param[keys[0]].keywords) {
-                for (const key of keys) {
-                  const filteredParam = param[key].keywords.filter(keyword => keyword === value)
-                  if (filteredParam.length === 1) {
-                    value = key
-                    break
+        const matches = reg.exec(userSentence)
+        if (matches) {
+          const fields = {}
+          if (matches.length > 1) {
+            for (let i = 1; i < matches.length; i++) {
+              let value = matches[i]
+              const type = sentenceData.fields[i - 1]
+              const param = this.app.config.chatbot.params[type]
+              if (type.indexOf('number') !== -1) {
+                value = parseInt(value)
+              }
+              else if (_.isPlainObject(param)) {
+                const keys = Object.keys(param)
+                if (param[keys[0]].keywords) {
+                  for (const key of keys) {
+                    const filteredParam = param[key].keywords.filter(keyword => keyword === value)
+                    if (filteredParam.length === 1) {
+                      value = key
+                      break
+                    }
                   }
                 }
+                else {
+                  value = param[value]
+                }
               }
-              else {
-                value = param[value]
-              }
+              fields[type] = value
             }
-            fields[type] = value
           }
+          results = {
+            botId: bot.name,
+            bot: bot.toJSON ? bot.toJSON() : bot,
+            action: stateData ? stateData.id : null,
+            state: stateData,
+            responses: stateData && stateData.responses ? stateData.responses[lang] : [],
+            response: stateData && stateData.responses ? _.sample(stateData.responses[lang]) : '',
+            lang: lang,
+            userSentence: userSentence,
+            match: matches,
+            fields: fields
+          }
+          break
         }
-        results = {
-          botId: bot.name,
-          bot: bot.toJSON ? bot.toJSON() : bot,
-          action: stateData ? stateData.id : null,
-          state: stateData,
-          responses: stateData && stateData.responses ? stateData.responses[lang] : [],
-          response: stateData && stateData.responses ? _.sample(stateData.responses[lang]) : '',
-          lang: lang,
-          userSentence: userSentence,
-          match: matches,
-          fields: fields
-        }
-        break
       }
     }
     return results
