@@ -21,7 +21,7 @@
     "test"
   ],
   "dependencies": {
-    "trailpack": "^2.1.2"
+    "trailpack": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^4.0.0",
